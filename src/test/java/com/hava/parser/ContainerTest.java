@@ -19,6 +19,8 @@ public class ContainerTest {
     public void parseInputContainingUnexpectedCharacters_throwsInvalidShapeInputException() {
         // unexpected/unsupported characters are: @#$
         Container container = new Container();
+        assertThrows(InvalidShapeInputException.class, () -> container.parse(null));
+        assertThrows(InvalidShapeInputException.class, () -> container.parse(""));
         assertThrows(InvalidShapeInputException.class, () -> container.parse("@#$"));
         assertThrows(InvalidShapeInputException.class, () -> container.parse("[@#$"));
         assertThrows(InvalidShapeInputException.class, () -> container.parse("#[@(#$"));
@@ -41,11 +43,15 @@ public class ContainerTest {
     }
 
     @Test
-    public void parseValidStringInput() throws Exception {
+    public void parseWithValidValidStringInput() throws Exception {
         Container container = new Container();
 
         assertEquals("[[ 12 ]]", container.parse("[12]").toString());
+        assertEquals("[[ 123 ]]", container.parse("[123 ]").toString());
         assertEquals("[[ 12 [[ 34 ]] ]]", container.parse("[12[34]]").toString());
+        assertEquals("[[ 12 [[ 34 ]] ]]", container.parse("[1 2[3 4]]").toString());
+        assertEquals("[[ 121 [[ 34 ], [ 567 ]] ]]", container.parse("[121[34][567]]").toString());
+//        assertEquals("[[ 12 [[ 34 ], [ 56 ], [ 78 ]] ]]", container.parse("[12[34][56][78]]").toString());
 //        assertEquals("[[ 12 [[ 34 [[ 67 ]] ]] ]]", container.parse("[12[34[67]]]").toString());
 //        assertEquals("[[ 12 [[ 34 ], [ 56 ]] ]]", container.parse("[12[34][56]]").toString());
     }

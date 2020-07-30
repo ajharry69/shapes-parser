@@ -6,15 +6,26 @@ import com.hava.parser.exceptions.InvalidShapeStartLabelException;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
 public class Shape {
     public static final char[] SUPPORTED_START_LABELS = new char[]{'[', '('};
     public static final char[] SUPPORTED_END_LABELS = new char[]{']', ')'};
-    private final String label;
+    private final int uid;
+    private String label;
     private final char startLabel, endLabel;
-    private final List<Shape> innerShapes;
+    private List<Shape> innerShapes;
+
+    public Shape(String label, char startLabel, char endLabel) throws Exception {
+        this(label, startLabel, endLabel, Collections.emptyList());
+    }
 
     public Shape(String label, char startLabel, char endLabel, List<Shape> innerShapes) throws Exception {
+        this(label, startLabel, endLabel, innerShapes, Math.abs(UUID.randomUUID().hashCode()));
+    }
+
+    public Shape(String label, char startLabel, char endLabel, List<Shape> innerShapes, int uid) throws Exception {
+        this.uid = uid;
         if (label == null || label.isEmpty()) throw new InvalidShapeException("A shape must have a label");
         assertSupportedStartLabel(startLabel);
         assertSupportedEndLabel(endLabel);
@@ -24,12 +35,16 @@ public class Shape {
         this.innerShapes = innerShapes;
     }
 
-    public Shape(String label, char startLabel, char endLabel) throws Exception {
-        this(label, startLabel, endLabel, Collections.emptyList());
+    public int getUid() {
+        return uid;
     }
 
     public String getLabel() {
         return label;
+    }
+
+    public void setLabel(String label) {
+        this.label = label;
     }
 
     public char getStartLabel() {
@@ -42,6 +57,34 @@ public class Shape {
 
     public List<Shape> getInnerShapes() {
         return innerShapes;
+    }
+
+    public void setInnerShapes(List<Shape> innerShapes) {
+        this.innerShapes = innerShapes;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Shape)) return false;
+
+        Shape shape = (Shape) o;
+
+        if (getUid() != shape.getUid()) return false;
+        if (getStartLabel() != shape.getStartLabel()) return false;
+        if (getEndLabel() != shape.getEndLabel()) return false;
+        if (!getLabel().equals(shape.getLabel())) return false;
+        return getInnerShapes().equals(shape.getInnerShapes());
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getUid();
+        result = 31 * result + getLabel().hashCode();
+        result = 31 * result + (int) getStartLabel();
+        result = 31 * result + (int) getEndLabel();
+        result = 31 * result + getInnerShapes().hashCode();
+        return result;
     }
 
     @Override

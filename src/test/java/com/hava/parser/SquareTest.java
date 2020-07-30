@@ -5,12 +5,17 @@ import com.hava.parser.exceptions.InvalidShapeLabelException;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static com.hava.parser.utils.TestConstants.listOf;
 import static org.junit.Assert.*;
 
 public class SquareTest {
+    @Test
+    public void squareEquality() throws Exception {
+        assertEquals(new Square("12", Collections.emptyList(), 1), new Square("12", Collections.emptyList(), 1));
+    }
 
     @Test
     public void squareHasAnOpeningSquareBracketAsStartLabelAndAClosingSquareBracketAsEndLabel() throws Exception {
@@ -33,7 +38,6 @@ public class SquareTest {
 
     @Test
     public void squareContainingInnerShapes_thatAreNotOfTypeSquare_throwsInvalidInnerShapeException() throws Exception {
-
         assertThrows(InvalidInnerShapeException.class, () -> new Square("123", simpleInvalidSquareInnerShapes()));
         assertThrows(InvalidInnerShapeException.class, () -> new Square("123", complexInvalidSquareInnerShapes()));
 

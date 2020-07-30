@@ -5,8 +5,9 @@ import com.hava.parser.exceptions.InvalidShapeException;
 import com.hava.parser.exceptions.InvalidShapeStartLabelException;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThrows;
+import java.util.Collections;
+
+import static org.junit.Assert.*;
 
 public class ShapeTest {
     @Test
@@ -17,7 +18,6 @@ public class ShapeTest {
 
     @Test
     public void shapeInstanceWithNullOrEmptyStringLabel_throwsInvalidShapeException() {
-        //noinspection ConstantConditions
         assertThrows(InvalidShapeException.class, () -> new Shape(null, '[', ']'));
         assertThrows(InvalidShapeException.class, () -> new Shape("", '(', ')'));
     }
@@ -44,5 +44,15 @@ public class ShapeTest {
     public void shapeToString() throws Exception {
         assertEquals("( LABEL )", new Shape("LABEL", '(', ')').toString());
         assertEquals("[ 123 ]", new Shape("123", '[', ']').toString());
+    }
+
+    @Test
+    public void shapeEquality() throws Exception {
+        int uid = 1;
+        Shape shape = new Shape("12", '[', ']', Collections.emptyList(), uid);
+        assertEquals(shape, new Shape("12", '[', ']', Collections.emptyList(), uid));
+        assertNotEquals(shape, new Shape("12", '[', ']', Collections.emptyList(), uid + 1));
+        // creating instance of shape without passing uid param (always) creates a unique shape
+        assertNotEquals(new Shape("12", '[', ']', Collections.emptyList()), new Shape("12", '[', ']', Collections.emptyList()));
     }
 }
