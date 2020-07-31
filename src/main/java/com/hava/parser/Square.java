@@ -46,7 +46,6 @@ public class Square extends Shape {
         for (int i = 0; i < chars.length; i++) {
             containerCurrentBaseIndex++;
             char c = chars[i];
-//            System.out.println(c); // TODO...
             String label = labelBuilder.toString();
             if (c == '[') {
                 // square shape initiator(start label)
@@ -117,7 +116,7 @@ public class Square extends Shape {
                 labelBuilder.append(c);
             } else throw new MalformedShapeInputException();
         }
-        System.out.printf("=====================================%n%s%n=====================================%n", shapes); // TODO
+//        System.out.printf("=====================================%n%s%n=====================================%n", shapes); // TODO
         assert shapes.size() <= permittedShapesSize;
         containerShapes.addAll(shapes);
         return containerCurrentBaseIndex;

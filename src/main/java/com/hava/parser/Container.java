@@ -9,8 +9,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import static com.hava.parser.utils.Constants.assertValidSquareShape;
-
 public class Container implements ShapeParser {
     private Collection<Shape> shapes;
 
@@ -38,7 +36,9 @@ public class Container implements ShapeParser {
 
     @Override
     public String toString() {
-        return this.getShapes().toString();
+        // to avoid confusion between square shape start('[') and end(']') labels from list string's '['/']',
+        // replace them with '{' for list start and '}' for list end symbols
+        return getShapes().toString().replaceAll("^\\[", "{").replaceAll("]$", "}");
     }
 
     public Collection<Shape> shapeBuilder(String input) throws Exception {
@@ -52,7 +52,7 @@ public class Container implements ShapeParser {
                     break;
                 case '(':
                     // attempt create Circle
-                    i++;
+                    i = Circle.createFromInput(input.substring(i), shapes, i);
                     break;
                 default:
                     // do not thing; probably a space or label text/number
@@ -70,9 +70,8 @@ public class Container implements ShapeParser {
     private void assertIsValidInput(String input) throws InvalidShapeInputException {
         if (Pattern.matches(".*[$@#]+", input)) throw new InvalidShapeInputException();
 
-        assertValidSquareShape(input); // FIXME: 7/30/20 remove...
+//        assertValidSquareShape(input);
 //        assertValidCircleShape(input);
-        // Pattern.matches(".*[\\[\\]]+", input)
     }
 
 }

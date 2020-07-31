@@ -98,7 +98,9 @@ public class Shape {
     @Override
     public String toString() {
         List<Shape> shapes = getInnerShapes();
-        String shapesStr = shapes.toString();
+        // to avoid confusion between square shape start('[') and end(']') labels from list string's '['/']',
+        // replace them with '{' for list start and '}' for list end symbols
+        String shapesStr = shapes.toString().replaceAll("^\\[", "{").replaceAll("]$", "}");
         if (shapes.isEmpty()) shapesStr = "";
         return String.format("%s %s %s %s", getStartLabel(), getLabel(), shapesStr, getEndLabel()).replaceAll(" {2}", " ");
     }
