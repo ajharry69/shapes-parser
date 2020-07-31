@@ -6,18 +6,18 @@ import java.util.List;
 
 public class Response {
     private final List<Shape> shapes;
-    private final int nextIndex;
+    private final int skipElements;
 
-    public Response(List<Shape> shapes, int nextIndex) {
+    public Response(List<Shape> shapes, int skipElements) {
         this.shapes = shapes;
-        this.nextIndex = nextIndex;
+        this.skipElements = skipElements;
     }
 
     public List<Shape> getShapes() {
         return shapes;
     }
 
-    public int getNextIndex() {
-        return nextIndex;
+    public int getSkipElements() {
+        return skipElements;
     }
 }

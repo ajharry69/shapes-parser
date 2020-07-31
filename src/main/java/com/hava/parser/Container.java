@@ -4,10 +4,7 @@ import com.hava.parser.exceptions.InvalidShapeInputException;
 import com.hava.parser.exceptions.MalformedShapeInputException;
 import com.hava.parser.utils.Response;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.regex.Pattern;
 
 public class Container implements ShapeParser {
@@ -47,24 +44,23 @@ public class Container implements ShapeParser {
         char[] chars = input.toCharArray();
         int i = 0;
         while (i < chars.length) {
-            switch (chars[i]) {
+            char c = chars[i];
+            Response response;
+            switch (c) {
                 case '[':
-                    Response response = Square.createFromInput(input.substring(i), i);
+                    response = Square.createFromInput(input.substring(i));
                     shapes.addAll(response.getShapes());
-                    i = response.getNextIndex();
+                    i += response.getSkipElements();
                     break;
                 case '(':
                     // attempt create Circle
-                    Response _response = Circle.createFromInput(input.substring(i), i);
-                    shapes.addAll(_response.getShapes());
-                    i = _response.getNextIndex();
+                    response = Circle.createFromInput(input.substring(i));
+                    shapes.addAll(response.getShapes());
+                    i += response.getSkipElements();
                     break;
                 default:
-                    // do not thing; probably a space or label text/number
-                    if (chars[i] != ' ' && i == 0) {
-                        // first character can either be space(' '), '[' or '('
-                        throw new MalformedShapeInputException();
-                    }
+                    // first character can either be space(' '), '[' or '('
+                    if (!Arrays.asList(']', ')').contains(c)) throw new MalformedShapeInputException();
                     i++;
                     break;
             }

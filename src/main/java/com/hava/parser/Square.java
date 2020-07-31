@@ -33,16 +33,17 @@ public class Square extends Shape {
      * 1. [\[0-9\]+], [\[0-9\]+[\[0-9\]+]] or [\[0-9\]+[\[0-9\]+]][\[0-9\]+] with optional
      * other appended characters after every closing bracket...
      */
-    public static Response createFromInput(String input, int containerCurrentBaseIndex) throws Exception {
+    public static Response createFromInput(String input) throws Exception {
         Stack<Shape> incompleteTraversals = new Stack<>();
         List<Shape> tempInnerShapes = new ArrayList<>();
         List<Shape> shapes = new ArrayList<>();
         int permittedShapesSize = 1; // i.e. shapes here refers to above
         StringBuilder labelBuilder = new StringBuilder();
 
+        int traversedCharactersCount = 0;
         char[] chars = input.toCharArray();
         for (int i = 0; i < chars.length; i++) {
-            containerCurrentBaseIndex++;
+            traversedCharactersCount++;
             char c = chars[i];
             String label = labelBuilder.toString();
             if (c == '[') {
@@ -116,7 +117,6 @@ public class Square extends Shape {
         }
 //        System.out.printf("=====================================%n%s%n=====================================%n", shapes); // TODO
         assert shapes.size() <= permittedShapesSize;
-//        containerShapes.addAll(shapes);
-        return new Response(shapes, containerCurrentBaseIndex);
+        return new Response(shapes, traversedCharactersCount);
     }
 }

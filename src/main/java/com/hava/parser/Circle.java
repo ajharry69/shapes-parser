@@ -1,7 +1,6 @@
 package com.hava.parser;
 
 import com.hava.parser.exceptions.InvalidInnerShapeException;
-import com.hava.parser.exceptions.InvalidShapeInputException;
 import com.hava.parser.exceptions.InvalidShapeLabelException;
 import com.hava.parser.exceptions.MalformedShapeInputException;
 import com.hava.parser.utils.Response;
@@ -24,20 +23,18 @@ public class Circle extends Shape {
             throw new InvalidShapeLabelException("Only UPPERCASE letters are supported as label for Circles");
     }
 
-    public static Response createFromInput(String input, int containerCurrentBaseIndex) throws Exception {
-        if (input == null || input.isEmpty()) throw new InvalidShapeInputException();
-
+    public static Response createFromInput(String input) throws Exception {
         Stack<Shape> incompleteTraversals = new Stack<>();
         List<Shape> tempInnerShapes = new ArrayList<>();
         List<Shape> shapes = new ArrayList<>();
         int permittedShapesSize = 1; // i.e. shapes here refers to above
         StringBuilder labelBuilder = new StringBuilder();
 
+        int traversedCharactersCount = 0;
         char[] chars = input.toCharArray();
         for (int i = 0; i < chars.length; i++) {
-            containerCurrentBaseIndex++;
+            traversedCharactersCount++;
             char c = chars[i];
-//            System.out.println(c); // TODO...
             String label = labelBuilder.toString();
             if (c == '(') {
                 // square shape initiator(start label)
@@ -95,7 +92,7 @@ public class Circle extends Shape {
 //                System.out.printf("chars[%d] = %s, Shapes Size: %d, Stack Size: %d%n", i, c, shapes.size(), incompleteTraversals.size()); // TODO: ....
                 // will be executed when a closing partner for initial opening square bracket has been reached. i.e.
                 // char[i] == ')' and it meets the preceding condition. Below are example of when execution will happen:
-                //  1. (12], (12(34)) or (12(34(56))) // happens at last char
+                //  1. (12), (12(34)) or (12(34(56))) // happens at last char
                 //  2. (12(34(56)))) // happens at second last char
                 if (incompleteTraversals.empty()) {
                     // if the above condition is not met i.e. this comment is reached, the [shapes] should be allowed
@@ -107,12 +104,12 @@ public class Circle extends Shape {
                 // correct label for a Circle, append it to labelBuilder
                 labelBuilder.append(c);
             } else if (c == '[') {
-                Circle.createFromInput(input.substring(i), containerCurrentBaseIndex);
+                // FIXME: 8/1/20 add square to circle...
+                Circle.createFromInput(input.substring(i));
             } else throw new MalformedShapeInputException();
         }
 //        System.out.printf("=====================================%n%s%n=====================================%n", shapes); // TODO
         assert shapes.size() <= permittedShapesSize;
-//        containerShapes.addAll(shapes);
-        return new Response(shapes, containerCurrentBaseIndex);
+        return new Response(shapes, traversedCharactersCount);
     }
 }
