@@ -2,6 +2,9 @@ package com.hava.parser.utils;
 
 import com.hava.parser.exceptions.MalformedShapeInputException;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.regex.Pattern;
 
 public class Constants {
@@ -23,5 +26,12 @@ public class Constants {
         StringBuilder sb = new StringBuilder();
         for (char c : chars) sb.append(c);
         return sb.toString();
+    }
+
+    @SafeVarargs
+    public static <T> List<T> addAll(List<T> tList, T... ts) {
+        List<T> list = new ArrayList<>(tList);
+        list.addAll(Arrays.asList(ts));
+        return list;
     }
 }

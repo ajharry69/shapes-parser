@@ -37,6 +37,7 @@ public class Square extends Shape {
         if (input == null || input.isEmpty()) throw new InvalidShapeInputException();
 
         Stack<Shape> incompleteTraversals = new Stack<>();
+        List<Shape> tempInnerShapes = new ArrayList<>();
         LinkedHashMap<Integer, Shape> shapes = new LinkedHashMap<>();
         int permittedShapesSize = 1; // i.e. shapes here refers to above
         StringBuilder labelBuilder = new StringBuilder();
@@ -45,6 +46,7 @@ public class Square extends Shape {
         for (int i = 0; i < chars.length; i++) {
             containerCurrentBaseIndex++;
             char c = chars[i];
+//            System.out.println(c); // TODO...
             String label = labelBuilder.toString();
             if (c == '[') {
                 // square shape initiator(start label)
@@ -59,14 +61,17 @@ public class Square extends Shape {
                     // at this point, input was probably like [12[... hence sq should be the square labelled by 12
                     // add it(sq) to the stack since it could have inner shape(s) one of which should be built from
                     // the current index(i)
-                    if (incompleteTraversals.isEmpty()) {
-                        // in this example [12[34]], below will executed at the 4th element
+                    if (incompleteTraversals.isEmpty() && chars[i - 1] != ']') {
+                        // for input [12[34]], below will executed at the 4th element ('[')
                         shapes.putIfAbsent(i, sq);
                     }
                     if (chars[i - 1] != ']') {
-                        // at this point, input was probably like [12[... hence sq should be the square labelled by 12
-                        // add it(sq) to the stack since it could have inner shape(s) one of which should be built from
-                        // the current index(i)
+                        // make sure it is ready to accept potential inner shapes for the shape(sp) currently being
+                        // pushed to the stack of incomplete traversals
+                        assert tempInnerShapes.isEmpty();
+                        // at this point, input was probably like [12[... hence sq should be the square labelled by
+                        // 12 add it(sq) to the stack since it could have inner shape(s) one of which should be
+                        // built from the current index(i)
                         incompleteTraversals.push(sq);
                     }
                 }
@@ -79,11 +84,24 @@ public class Square extends Shape {
                 boolean popIncompleteOrBreakLoop = i + 1 < chars.length && chars[i + 1] != '[';
                 if (!incompleteTraversals.empty()) {
                     Shape insq = popIncompleteOrBreakLoop ? incompleteTraversals.pop() : incompleteTraversals.peek();
-                    insq.addInnerShapes(new Square(label));
+                    if (!label.isEmpty()) insq.addInnerShapes(new Square(label));
+
+                    if (incompleteTraversals.empty()) {
+                        insq.addInnerShapes(tempInnerShapes.toArray(new Shape[0]));
+                        tempInnerShapes.clear();
+                    } else {
+                        if (popIncompleteOrBreakLoop) {
+                            insq.addInnerShapes(tempInnerShapes.toArray(new Shape[0]));
+                            tempInnerShapes.clear();
+                            tempInnerShapes.add(insq);
+                        }
+                    }
                 } else {
                     shapes.put(i, new Square(label)); // executed when input is [12]
                 }
-                System.out.printf("chars[%d] = %s, Shapes Size: %d, Stack Size: %d%n", i, c, shapes.size(), incompleteTraversals.size()); // TODO: ....
+                // reset/delete past labels upon reaching a shape's end label
+                labelBuilder = new StringBuilder();
+//                System.out.printf("chars[%d] = %s, Shapes Size: %d, Stack Size: %d%n", i, c, shapes.size(), incompleteTraversals.size()); // TODO: ....
                 // will be executed when a closing partner for initial opening square bracket has been reached. i.e.
                 // char[i] == ']' and it meets the preceding condition. Below are example of when execution will happen:
                 //  1. [12], [12[34]] or [12[34[56]]] // happens at last char
@@ -97,9 +115,7 @@ public class Square extends Shape {
             } else if (String.valueOf(c).matches("[0-9]")) {
                 // correct label for a Square, append it to labelBuilder
                 labelBuilder.append(c);
-            } else {
-                throw new MalformedShapeInputException();
-            }
+            } else throw new MalformedShapeInputException();
         }
         System.out.printf("=====================================%n%s%n=====================================%n", shapes); // TODO
         assert shapes.values().size() <= permittedShapesSize;
