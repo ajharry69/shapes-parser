@@ -109,7 +109,7 @@ public class Circle extends Shape {
                 Circle.createFromInput(input.substring(i), shapes, containerCurrentBaseIndex);
             } else throw new MalformedShapeInputException();
         }
-        System.out.printf("=====================================%n%s%n=====================================%n", shapes); // TODO
+//        System.out.printf("=====================================%n%s%n=====================================%n", shapes); // TODO
         assert shapes.size() <= permittedShapesSize;
         containerShapes.addAll(shapes);
         return containerCurrentBaseIndex;

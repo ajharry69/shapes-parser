@@ -1,7 +1,6 @@
 package com.hava.parser;
 
 import com.hava.parser.exceptions.InvalidInnerShapeException;
-import com.hava.parser.exceptions.InvalidShapeInputException;
 import com.hava.parser.exceptions.InvalidShapeLabelException;
 import com.hava.parser.exceptions.MalformedShapeInputException;
 
@@ -34,8 +33,6 @@ public class Square extends Shape {
      * other appended characters after every closing bracket...
      */
     public static int createFromInput(String input, List<Shape> containerShapes, int containerCurrentBaseIndex) throws Exception {
-        if (input == null || input.isEmpty()) throw new InvalidShapeInputException();
-
         Stack<Shape> incompleteTraversals = new Stack<>();
         List<Shape> tempInnerShapes = new ArrayList<>();
         List<Shape> shapes = new ArrayList<>();

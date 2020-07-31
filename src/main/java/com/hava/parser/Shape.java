@@ -3,12 +3,12 @@ package com.hava.parser;
 import com.hava.parser.exceptions.InvalidShapeEndLabelException;
 import com.hava.parser.exceptions.InvalidShapeException;
 import com.hava.parser.exceptions.InvalidShapeStartLabelException;
+import com.hava.parser.utils.Constants;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
-import static com.hava.parser.utils.Constants.addAll;
 
 public class Shape {
     public static final char[] SUPPORTED_START_LABELS = new char[]{'[', '('};
@@ -66,7 +66,7 @@ public class Shape {
     }
 
     public List<Shape> addInnerShapes(Shape... shapes) {
-        List<Shape> _shapes = addAll(getInnerShapes(), shapes);
+        List<Shape> _shapes = Constants.addAll(getInnerShapes(), shapes);
         setInnerShapes(_shapes);
         return _shapes;
     }

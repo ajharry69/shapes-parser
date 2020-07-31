@@ -69,9 +69,6 @@ public class Container implements ShapeParser {
 
     private void assertIsValidInput(String input) throws InvalidShapeInputException {
         if (Pattern.matches(".*[$@#]+", input)) throw new InvalidShapeInputException();
-
-//        assertValidSquareShape(input);
-//        assertValidCircleShape(input);
     }
 
 }

@@ -1,25 +1,21 @@
 package com.hava.parser.utils;
 
-import com.hava.parser.exceptions.MalformedShapeInputException;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
 
 public class Constants {
-    public static void assertValidCircleShape(String input) throws MalformedShapeInputException {
-        boolean validCircle = Pattern.matches("^.*\\([A-Z0-9]+[)].*$", input);
-        if (!validCircle) throw new MalformedShapeInputException();
+    public static boolean assertValidCircleShape(String input) {
+        return Pattern.matches("^.*\\([A-Z0-9]+[)].*$", input);
     }
 
     /**
      * - an opening square bracket must have a closing square bracket
      * - in between opening and closing square brackets, there must only be numbers
      */
-    public static void assertValidSquareShape(String input) throws MalformedShapeInputException {
-        boolean validSquare = Pattern.matches("^.*\\[[0-9]+[]].*$", input);
-        if (!validSquare) throw new MalformedShapeInputException();
+    public static boolean assertValidSquareShape(String input) {
+        return Pattern.matches("^.*\\[[0-9]+[]].*$", input);
     }
 
     public static String charsToString(char... chars) {

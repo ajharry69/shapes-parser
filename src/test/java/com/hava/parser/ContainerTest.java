@@ -2,7 +2,6 @@ package com.hava.parser;
 
 import com.hava.parser.exceptions.InvalidInnerShapeException;
 import com.hava.parser.exceptions.InvalidShapeInputException;
-import com.hava.parser.exceptions.MalformedShapeInputException;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -26,22 +25,6 @@ public class ContainerTest {
         assertThrows(InvalidShapeInputException.class, () -> container.parse("[@#$"));
         assertThrows(InvalidShapeInputException.class, () -> container.parse("#[@(#$"));
     }
-
-    /*@Test
-    public void parseInputContainingAStartLabelWithoutACorrespondingEndLabel_throwsMalformedShapeInputException() {
-        Container container = new Container();
-        // an opening square bracket must have a closing square bracket
-        assertThrows(MalformedShapeInputException.class, () -> container.parse("[13)"));
-        assertThrows(MalformedShapeInputException.class, () -> container.parse("([13)"));
-        assertThrows(MalformedShapeInputException.class, () -> container.parse("([13) ]"));
-        assertThrows(MalformedShapeInputException.class, () -> container.parse("]([13) ]"));
-
-        // in between opening and closing square brackets, there must only be numbers
-        assertThrows(MalformedShapeInputException.class, () -> container.parse("[]"));
-        assertThrows(MalformedShapeInputException.class, () -> container.parse("[ ]"));
-        assertThrows(MalformedShapeInputException.class, () -> container.parse("[2D]"));
-        assertThrows(MalformedShapeInputException.class, () -> container.parse("[E2D]"));
-    }*/
 
     @Test
     public void parseWithValidSquareStringInput() throws Exception {
@@ -89,5 +72,14 @@ public class ContainerTest {
         assertEquals("{( 12 {( 34 {( 11 ), ( 67 {( 1 {( 32 )} )} )} )} )}", container.parse("(12(34(11)(67(1(32)))))").toString());
         assertEquals("{( 12 {( 34 {( 3 ), ( 67 {( 1 ), ( 2 )} )} )} )}", container.parse("(12(34(67(1)(2))(3)))").toString());
         assertEquals("{( 12 {( 34 {( 3 ), ( 67 {( 1 ), ( 2 )} )} )} ), ( 999 )}", container.parse("(12(34(67(1)(2))(3)))(999)").toString());
+    }
+
+    @Test
+    public void parseWithValidCombinedCircleAndSquareStringInput() throws Exception {
+        Container container = new Container();
+
+        assertEquals("{( ABC ), [ 123 ]}", container.parse("(ABC)[123]").toString());
+        assertEquals("{( ABC ), [ 123 {[ 34 ]} ]}", container.parse("(ABC)[123[34]]").toString());
+        assertEquals("{( ABC {( DE )} ), [ 123 {[ 34 ]} ]}", container.parse("(ABC(DE))[123[34]]").toString());
     }
 }
