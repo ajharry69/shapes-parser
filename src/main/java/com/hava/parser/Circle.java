@@ -4,6 +4,7 @@ import com.hava.parser.exceptions.InvalidInnerShapeException;
 import com.hava.parser.exceptions.InvalidShapeInputException;
 import com.hava.parser.exceptions.InvalidShapeLabelException;
 import com.hava.parser.exceptions.MalformedShapeInputException;
+import com.hava.parser.utils.Response;
 
 import java.util.*;
 import java.util.regex.Pattern;
@@ -23,7 +24,7 @@ public class Circle extends Shape {
             throw new InvalidShapeLabelException("Only UPPERCASE letters are supported as label for Circles");
     }
 
-    public static int createFromInput(String input, List<Shape> containerShapes, int containerCurrentBaseIndex) throws Exception {
+    public static Response createFromInput(String input, int containerCurrentBaseIndex) throws Exception {
         if (input == null || input.isEmpty()) throw new InvalidShapeInputException();
 
         Stack<Shape> incompleteTraversals = new Stack<>();
@@ -106,12 +107,12 @@ public class Circle extends Shape {
                 // correct label for a Circle, append it to labelBuilder
                 labelBuilder.append(c);
             } else if (c == '[') {
-                Circle.createFromInput(input.substring(i), shapes, containerCurrentBaseIndex);
+                Circle.createFromInput(input.substring(i), containerCurrentBaseIndex);
             } else throw new MalformedShapeInputException();
         }
 //        System.out.printf("=====================================%n%s%n=====================================%n", shapes); // TODO
         assert shapes.size() <= permittedShapesSize;
-        containerShapes.addAll(shapes);
-        return containerCurrentBaseIndex;
+//        containerShapes.addAll(shapes);
+        return new Response(shapes, containerCurrentBaseIndex);
     }
 }

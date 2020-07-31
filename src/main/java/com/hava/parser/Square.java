@@ -3,6 +3,7 @@ package com.hava.parser;
 import com.hava.parser.exceptions.InvalidInnerShapeException;
 import com.hava.parser.exceptions.InvalidShapeLabelException;
 import com.hava.parser.exceptions.MalformedShapeInputException;
+import com.hava.parser.utils.Response;
 
 import java.util.*;
 import java.util.regex.Pattern;
@@ -32,7 +33,7 @@ public class Square extends Shape {
      * 1. [\[0-9\]+], [\[0-9\]+[\[0-9\]+]] or [\[0-9\]+[\[0-9\]+]][\[0-9\]+] with optional
      * other appended characters after every closing bracket...
      */
-    public static int createFromInput(String input, List<Shape> containerShapes, int containerCurrentBaseIndex) throws Exception {
+    public static Response createFromInput(String input, int containerCurrentBaseIndex) throws Exception {
         Stack<Shape> incompleteTraversals = new Stack<>();
         List<Shape> tempInnerShapes = new ArrayList<>();
         List<Shape> shapes = new ArrayList<>();
@@ -115,7 +116,7 @@ public class Square extends Shape {
         }
 //        System.out.printf("=====================================%n%s%n=====================================%n", shapes); // TODO
         assert shapes.size() <= permittedShapesSize;
-        containerShapes.addAll(shapes);
-        return containerCurrentBaseIndex;
+//        containerShapes.addAll(shapes);
+        return new Response(shapes, containerCurrentBaseIndex);
     }
 }

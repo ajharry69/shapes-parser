@@ -72,6 +72,7 @@ public class ContainerTest {
         assertEquals("{( 12 {( 34 {( 11 ), ( 67 {( 1 {( 32 )} )} )} )} )}", container.parse("(12(34(11)(67(1(32)))))").toString());
         assertEquals("{( 12 {( 34 {( 3 ), ( 67 {( 1 ), ( 2 )} )} )} )}", container.parse("(12(34(67(1)(2))(3)))").toString());
         assertEquals("{( 12 {( 34 {( 3 ), ( 67 {( 1 ), ( 2 )} )} )} ), ( 999 )}", container.parse("(12(34(67(1)(2))(3)))(999)").toString());
+//        assertEquals("{( ABC {[ 321 ]} )}", container.parse("(ABC[321])").toString());
     }
 
     @Test
@@ -81,5 +82,6 @@ public class ContainerTest {
         assertEquals("{( ABC ), [ 123 ]}", container.parse("(ABC)[123]").toString());
         assertEquals("{( ABC ), [ 123 {[ 34 ]} ]}", container.parse("(ABC)[123[34]]").toString());
         assertEquals("{( ABC {( DE )} ), [ 123 {[ 34 ]} ]}", container.parse("(ABC(DE))[123[34]]").toString());
+//        assertEquals("{( ABC {[ 321 ]} ), [ 123 {[ 34 ]} ]}", container.parse("(ABC[321])[123[34]]").toString());
     }
 }

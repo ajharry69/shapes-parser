@@ -2,6 +2,7 @@ package com.hava.parser;
 
 import com.hava.parser.exceptions.InvalidShapeInputException;
 import com.hava.parser.exceptions.MalformedShapeInputException;
+import com.hava.parser.utils.Response;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -48,11 +49,15 @@ public class Container implements ShapeParser {
         while (i < chars.length) {
             switch (chars[i]) {
                 case '[':
-                    i = Square.createFromInput(input.substring(i), shapes, i);
+                    Response response = Square.createFromInput(input.substring(i), i);
+                    shapes.addAll(response.getShapes());
+                    i = response.getNextIndex();
                     break;
                 case '(':
                     // attempt create Circle
-                    i = Circle.createFromInput(input.substring(i), shapes, i);
+                    Response _response = Circle.createFromInput(input.substring(i), i);
+                    shapes.addAll(_response.getShapes());
+                    i = _response.getNextIndex();
                     break;
                 default:
                     // do not thing; probably a space or label text/number
