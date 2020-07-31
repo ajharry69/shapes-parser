@@ -1,5 +1,6 @@
 package com.hava.parser;
 
+import com.hava.parser.exceptions.InvalidInnerShapeException;
 import com.hava.parser.exceptions.InvalidShapeInputException;
 import com.hava.parser.exceptions.MalformedShapeInputException;
 import org.junit.Test;
@@ -46,12 +47,14 @@ public class ContainerTest {
     public void parseWithValidValidStringInput() throws Exception {
         Container container = new Container();
 
+        assertThrows(InvalidInnerShapeException.class, () -> container.parse("[[12]]"));
         assertEquals("[[ 12 ]]", container.parse("[12]").toString());
         assertEquals("[[ 123 ]]", container.parse("[123 ]").toString());
         assertEquals("[[ 12 [[ 34 ]] ]]", container.parse("[12[34]]").toString());
         assertEquals("[[ 12 [[ 34 ]] ]]", container.parse("[1 2[3 4]]").toString());
         assertEquals("[[ 121 [[ 34 ], [ 567 ]] ]]", container.parse("[121[34][567]]").toString());
-//        assertEquals("[[ 12 [[ 34 ], [ 56 ], [ 78 ]] ]]", container.parse("[12[34][56][78]]").toString());
+        assertEquals("[[ 12 [[ 341 ], [ 56 ], [ 78 ]] ]]", container.parse("[12[341][56][78]]").toString());
+        assertEquals("[[ 12 [[ 341 ], [ 56 ], [ 78 ], [ 516 ], [ 718 ], [ 526 ], [ 728 ]] ]]", container.parse("[12[341][56][78][516][718][526][728]]").toString());
 //        assertEquals("[[ 12 [[ 34 [[ 67 ]] ]] ]]", container.parse("[12[34[67]]]").toString());
 //        assertEquals("[[ 12 [[ 34 ], [ 56 ]] ]]", container.parse("[12[34][56]]").toString());
     }

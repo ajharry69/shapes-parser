@@ -4,9 +4,7 @@ import com.hava.parser.exceptions.InvalidShapeEndLabelException;
 import com.hava.parser.exceptions.InvalidShapeException;
 import com.hava.parser.exceptions.InvalidShapeStartLabelException;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 public class Shape {
     public static final char[] SUPPORTED_START_LABELS = new char[]{'[', '('};
@@ -61,6 +59,13 @@ public class Shape {
 
     public void setInnerShapes(List<Shape> innerShapes) {
         this.innerShapes = innerShapes;
+    }
+
+    public List<Shape> addInnerShapes(Shape... shapes) {
+        List<Shape> _shapes = new ArrayList<>(getInnerShapes());
+        _shapes.addAll(Arrays.asList(shapes));
+        setInnerShapes(_shapes);
+        return _shapes;
     }
 
     @Override
