@@ -38,7 +38,7 @@ public class Square extends Shape {
 
         Stack<Shape> incompleteTraversals = new Stack<>();
         List<Shape> tempInnerShapes = new ArrayList<>();
-        LinkedHashMap<Integer, Shape> shapes = new LinkedHashMap<>();
+        List<Shape> shapes = new ArrayList<>();
         int permittedShapesSize = 1; // i.e. shapes here refers to above
         StringBuilder labelBuilder = new StringBuilder();
 
@@ -63,7 +63,7 @@ public class Square extends Shape {
                     // the current index(i)
                     if (incompleteTraversals.isEmpty() && chars[i - 1] != ']') {
                         // for input [12[34]], below will executed at the 4th element ('[')
-                        shapes.putIfAbsent(i, sq);
+                        shapes.add(sq);
                     }
                     if (chars[i - 1] != ']') {
                         // make sure it is ready to accept potential inner shapes for the shape(sp) currently being
@@ -97,7 +97,7 @@ public class Square extends Shape {
                         }
                     }
                 } else {
-                    shapes.put(i, new Square(label)); // executed when input is [12]
+                    shapes.add(new Square(label)); // executed when input is [12]
                 }
                 // reset/delete past labels upon reaching a shape's end label
                 labelBuilder = new StringBuilder();
@@ -118,8 +118,8 @@ public class Square extends Shape {
             } else throw new MalformedShapeInputException();
         }
         System.out.printf("=====================================%n%s%n=====================================%n", shapes); // TODO
-        assert shapes.values().size() <= permittedShapesSize;
-        containerShapes.addAll(shapes.values());
+        assert shapes.size() <= permittedShapesSize;
+        containerShapes.addAll(shapes);
         return containerCurrentBaseIndex;
     }
 }
