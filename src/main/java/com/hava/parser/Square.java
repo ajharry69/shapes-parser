@@ -55,22 +55,22 @@ public class Square extends Shape {
                     }
                 } else {
                     // add new Square to shapes map
-                    Square sq = new Square(label);
                     // at this point, input was probably like [12[... hence sq should be the square labelled by 12
                     // add it(sq) to the stack since it could have inner shape(s) one of which should be built from
                     // the current index(i)
-                    if (incompleteTraversals.isEmpty() && chars[i - 1] != ']') {
-                        // for input [12[34]], below will executed at the 4th element ('[')
-                        shapes.add(sq);
-                    }
                     if (chars[i - 1] != ']') {
+                        Shape shape = new Square(label);
+                        if (incompleteTraversals.isEmpty()) {
+                            // for input [12[34]], below will executed at the 4th element ('[')
+                            shapes.add(shape);
+                        }
                         // make sure it is ready to accept potential inner shapes for the shape(sp) currently being
                         // pushed to the stack of incomplete traversals
                         assert tempInnerShapes.isEmpty();
-                        // at this point, input was probably like [12[... hence sq should be the square labelled by
-                        // 12 add it(sq) to the stack since it could have inner shape(s) one of which should be
+                        // at this point, input was probably like [12[... hence shape should be the square labelled by
+                        // 12 add it(shape) to the stack since it could have inner shape(s) one of which should be
                         // built from the current index(i)
-                        incompleteTraversals.push(sq);
+                        incompleteTraversals.push(shape);
                     }
                 }
                 // make sure label builder has no labels when a start Square symbol is found; every square must
@@ -99,7 +99,6 @@ public class Square extends Shape {
                 }
                 // reset/delete past labels upon reaching a shape's end label
                 labelBuilder = new StringBuilder();
-//                System.out.printf("chars[%d] = %s, Shapes Size: %d, Stack Size: %d%n", i, c, shapes.size(), incompleteTraversals.size()); // TODO: ....
                 // will be executed when a closing partner for initial opening square bracket has been reached. i.e.
                 // char[i] == ']' and it meets the preceding condition. Below are example of when execution will happen:
                 //  1. [12], [12[34]] or [12[34[56]]] // happens at last char
@@ -115,7 +114,6 @@ public class Square extends Shape {
                 labelBuilder.append(c);
             } else throw new MalformedShapeInputException();
         }
-//        System.out.printf("=====================================%n%s%n=====================================%n", shapes); // TODO
         assert shapes.size() <= permittedShapesSize;
         return new Response(shapes, traversedCharactersCount);
     }

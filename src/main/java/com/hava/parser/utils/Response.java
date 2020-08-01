@@ -20,4 +20,9 @@ public class Response {
     public int getSkipElements() {
         return skipElements;
     }
+
+    @Override
+    public String toString() {
+        return String.format("Skip Elements: %d, Shapes: %s", getSkipElements(), getShapes());
+    }
 }
