@@ -60,7 +60,7 @@ public class Container implements ShapeParser {
                     break;
                 default:
                     // first character can either be space(' '), '[' or '('
-//                    if (!Arrays.asList(']', ')').contains(c)) throw new MalformedShapeInputException();
+                    if (!Arrays.asList(']', ')').contains(c)) throw new MalformedShapeInputException();
                     i++;
                     break;
             }

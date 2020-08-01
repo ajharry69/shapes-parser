@@ -14,7 +14,7 @@ public class Shape {
     public static final char[] SUPPORTED_START_LABELS = new char[]{'[', '('};
     public static final char[] SUPPORTED_END_LABELS = new char[]{']', ')'};
     private final int uid;
-    private String label;
+    private final String label;
     private final char startLabel, endLabel;
     private List<Shape> innerShapes;
 
@@ -43,10 +43,6 @@ public class Shape {
 
     public String getLabel() {
         return label;
-    }
-
-    public void setLabel(String label) {
-        this.label = label;
     }
 
     public char getStartLabel() {
