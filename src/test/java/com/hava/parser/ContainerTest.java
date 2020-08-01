@@ -87,5 +87,12 @@ public class ContainerTest {
         assertEquals("{( ABC {[ 321 ]} )}", container.parse("(ABC[321])").toString());
         // example from the test
         assertEquals("{[ 12 ], ( BALL {( INK {( CHARLIE ), [ 1 {[ 35 ]} ]} )} )}", container.parse("[12](BALL(INK[1[35]](CHARLIE)))").toString());
+        assertThrows(Exception.class, () -> container.parse("[72(HELLO)]"));
+        // square must be labeled with numbers
+        assertThrows(Exception.class, () -> container.parse("[allow]"));
+        // only uppercase letters are allowed
+        assertThrows(Exception.class, () -> container.parse("(allow)"));
+        assertThrows(Exception.class, () -> container.parse("[13B)"));
+        assertThrows(Exception.class, () -> container.parse("([13B)"));
     }
 }
