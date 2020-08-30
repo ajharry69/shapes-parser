@@ -1,6 +1,6 @@
 package com.hava.parser.exceptions;
 
-public class InvalidShapeException extends Exception {
+public class InvalidShapeException extends RuntimeException {
     public InvalidShapeException() {
         super("Invalid shape.");
     }
