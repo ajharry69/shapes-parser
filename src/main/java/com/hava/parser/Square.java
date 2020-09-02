@@ -40,10 +40,10 @@ public class Square extends Shape {
         int permittedShapesSize = 1; // i.e. shapes here refers to above
         StringBuilder labelBuilder = new StringBuilder();
 
-        int traversedCharactersCount = 0;
+        int traversedCharsCount = 0;
         char[] chars = input.toCharArray();
         for (int i = 0; i < chars.length; i++) {
-            traversedCharactersCount++;
+            traversedCharsCount++;
             char c = chars[i];
             String label = labelBuilder.toString();
             if (c == '[') {
@@ -106,6 +106,6 @@ public class Square extends Shape {
             } else throw new MalformedShapeInputException();
         }
         assert shapes.size() <= permittedShapesSize;
-        return new Response(shapes, traversedCharactersCount);
+        return new Response(shapes, traversedCharsCount);
     }
 }

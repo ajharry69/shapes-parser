@@ -6,23 +6,23 @@ import java.util.List;
 
 public class Response {
     private final List<Shape> shapes;
-    private final int skipElements;
+    private final int traversedCharsCount;
 
-    public Response(List<Shape> shapes, int skipElements) {
+    public Response(List<Shape> shapes, int traversedCharsCount) {
         this.shapes = shapes;
-        this.skipElements = skipElements;
+        this.traversedCharsCount = traversedCharsCount;
     }
 
     public List<Shape> getShapes() {
         return shapes;
     }
 
-    public int getSkipElements() {
-        return skipElements;
+    public int getTraversedCharsCount() {
+        return traversedCharsCount;
     }
 
     @Override
     public String toString() {
-        return String.format("Skip Elements: %d, Shapes: %s", getSkipElements(), getShapes());
+        return String.format("Skip Elements: %d, Shapes: %s", getTraversedCharsCount(), getShapes());
     }
 }

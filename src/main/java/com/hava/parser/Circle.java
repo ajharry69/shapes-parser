@@ -30,11 +30,11 @@ public class Circle extends Shape {
         int permittedShapesSize = 1; // i.e. shapes here refers to above
         StringBuilder labelBuilder = new StringBuilder();
 
-        int traversedCharactersCount = 0;
+        int traversedCharsCount = 0;
         char[] chars = input.toCharArray();
         int i = 0;
         while (i < chars.length) {
-            traversedCharactersCount = i;
+            traversedCharsCount = i;
             char c = chars[i];
             String label = labelBuilder.toString();
             if (c == '(') {
@@ -77,7 +77,7 @@ public class Circle extends Shape {
                 labelBuilder = new StringBuilder();
                 Response response = Square.fromInput(input.substring(i));
                 tempInnerShapes.addAll(response.getShapes());
-                i += response.getSkipElements();
+                i += response.getTraversedCharsCount();
                 continue;
             } else {
                 if (c != ']') throw new MalformedShapeInputException();
@@ -85,7 +85,7 @@ public class Circle extends Shape {
             i++;
         }
         assert shapes.size() <= permittedShapesSize;
-        return new Response(shapes, traversedCharactersCount);
+        return new Response(shapes, traversedCharsCount);
     }
 
     private static void onCircleStartLabel(Stack<Shape> incompleteTraversals, List<Shape> tempInnerShapes, List<Shape> shapes, char[] chars, int i, String label) throws RuntimeException {

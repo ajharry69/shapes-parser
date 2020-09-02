@@ -39,8 +39,8 @@ public class Container implements ShapeParser {
         return getShapes().toString().replaceAll("^\\[", "{").replaceAll("]$", "}");
     }
 
-    public Collection<Shape> shapeBuilder(String input) throws RuntimeException {
-        ArrayList<Shape> shapes = new ArrayList<>();
+    private Collection<Shape> shapeBuilder(String input) throws RuntimeException {
+        List<Shape> shapes = new ArrayList<>();
         char[] chars = input.toCharArray();
         int i = 0;
         while (i < chars.length) {
@@ -50,13 +50,12 @@ public class Container implements ShapeParser {
                 case '[':
                     response = Square.fromInput(input.substring(i));
                     shapes.addAll(response.getShapes());
-                    i += response.getSkipElements();
+                    i += response.getTraversedCharsCount();
                     break;
                 case '(':
-                    // attempt create Circle
                     response = Circle.fromInput(input.substring(i));
                     shapes.addAll(response.getShapes());
-                    i += response.getSkipElements();
+                    i += response.getTraversedCharsCount();
                     break;
                 default:
                     // first character can either be space(' '), '[' or '('
