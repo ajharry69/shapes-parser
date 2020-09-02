@@ -23,7 +23,7 @@ public class Container implements ShapeParser {
     }
 
     @Override
-    public Container parse(String input) throws Exception {
+    public Container parse(String input) throws RuntimeException {
         if (input == null || input.isEmpty()) throw new InvalidShapeInputException();
         // strip off spaces from the input
         String cleansedInput = input.replaceAll("\\s+", "");
@@ -39,7 +39,7 @@ public class Container implements ShapeParser {
         return getShapes().toString().replaceAll("^\\[", "{").replaceAll("]$", "}");
     }
 
-    public Collection<Shape> shapeBuilder(String input) throws Exception {
+    public Collection<Shape> shapeBuilder(String input) throws RuntimeException {
         ArrayList<Shape> shapes = new ArrayList<>();
         char[] chars = input.toCharArray();
         int i = 0;
@@ -48,13 +48,13 @@ public class Container implements ShapeParser {
             Response response;
             switch (c) {
                 case '[':
-                    response = Square.createFromInput(input.substring(i));
+                    response = Square.fromInput(input.substring(i));
                     shapes.addAll(response.getShapes());
                     i += response.getSkipElements();
                     break;
                 case '(':
                     // attempt create Circle
-                    response = Circle.createFromInput(input.substring(i));
+                    response = Circle.fromInput(input.substring(i));
                     shapes.addAll(response.getShapes());
                     i += response.getSkipElements();
                     break;

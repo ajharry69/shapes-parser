@@ -10,7 +10,7 @@ import static org.junit.Assert.assertThrows;
 public class CircleTest {
 
     @Test
-    public void circleHasAnOpeningParenthesisAsStartLabelAndAClosingParenthesisAsEndLabel() throws Exception {
+    public void circleHasAnOpeningParenthesisAsStartLabelAndAClosingParenthesisAsEndLabel() throws RuntimeException {
         // opening parenthesis = '('
         // closing parenthesis = ')'
         Circle circle = new Circle("125");
@@ -19,7 +19,7 @@ public class CircleTest {
     }
 
     @Test
-    public void circleMustBeUppercase() throws Exception {
+    public void circleMustBeUppercase() throws RuntimeException {
         assertThrows(InvalidShapeLabelException.class, () -> new Circle("label"));
         assertThrows(InvalidShapeLabelException.class, () -> new Circle("Label"));
         assertThrows(InvalidShapeLabelException.class, () -> new Circle("LaBeL"));
@@ -28,7 +28,7 @@ public class CircleTest {
     }
 
     @Test
-    public void circleContainingOtherCirclesOrSquaresIsValid() throws Exception {
+    public void circleContainingOtherCirclesOrSquaresIsValid() throws RuntimeException {
         assertEquals('(', new Circle("LABEL", listOf(new Circle("LABEL"), new Circle("LABEL1", listOf(new Square("123"))))).getStartLabel());
     }
 }

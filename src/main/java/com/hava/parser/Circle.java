@@ -9,21 +9,21 @@ import java.util.*;
 import java.util.regex.Pattern;
 
 public class Circle extends Shape {
-    public Circle(String label) throws Exception {
+    public Circle(String label) throws RuntimeException {
         this(label, Collections.emptyList());
     }
 
-    public Circle(String label, List<Shape> innerShapes) throws Exception {
+    public Circle(String label, List<Shape> innerShapes) throws RuntimeException {
         this(label, innerShapes, Math.abs(UUID.randomUUID().hashCode()));
     }
 
-    public Circle(String label, List<Shape> innerShapes, int uid) throws Exception {
+    public Circle(String label, List<Shape> innerShapes, int uid) throws RuntimeException {
         super(label, '(', ')', innerShapes, uid);
         if (!Pattern.matches("[A-Z0-9]+", label))
             throw new InvalidShapeLabelException("Only UPPERCASE letters are supported as label for Circles");
     }
 
-    public static Response createFromInput(String input) throws Exception {
+    public static Response fromInput(String input) throws RuntimeException {
         Stack<Shape> incompleteTraversals = new Stack<>();
         List<Shape> tempInnerShapes = new ArrayList<>();
         List<Shape> shapes = new ArrayList<>();
@@ -48,19 +48,10 @@ public class Circle extends Shape {
                 // would return true for the seventh element in (12(34)) and false for the same element in (12(34](56))
                 boolean popIncompleteOrBreakLoop = (i + 1 < chars.length && chars[i + 1] != '(') || i + 1 == chars.length;
                 if (!incompleteTraversals.empty()) {
-                    Shape insq = popIncompleteOrBreakLoop ? incompleteTraversals.pop() : incompleteTraversals.peek();
-                    if (!label.isEmpty()) insq.addInnerShapes(new Circle(label));
+                    Shape sq = popIncompleteOrBreakLoop ? incompleteTraversals.pop() : incompleteTraversals.peek();
+                    if (!label.isEmpty()) sq.addInnerShapes(new Circle(label));
 
-                    if (incompleteTraversals.empty()) {
-                        insq.addInnerShapes(tempInnerShapes.toArray(new Shape[0]));
-                        tempInnerShapes.clear();
-                    } else {
-                        if (popIncompleteOrBreakLoop) {
-                            insq.addInnerShapes(tempInnerShapes.toArray(new Shape[0]));
-                            tempInnerShapes.clear();
-                            tempInnerShapes.add(insq);
-                        }
-                    }
+                    sq.addInnerShapes(tempInnerShapes, incompleteTraversals.empty(), popIncompleteOrBreakLoop);
                 } else {
                     shapes.add(new Circle(label)); // executed when input is (12)
                 }
@@ -84,7 +75,7 @@ public class Circle extends Shape {
                 // make sure label builder has no labels when a start Circle symbol is found; every square must
                 // have their own label
                 labelBuilder = new StringBuilder();
-                Response response = Square.createFromInput(input.substring(i));
+                Response response = Square.fromInput(input.substring(i));
                 tempInnerShapes.addAll(response.getShapes());
                 i += response.getSkipElements();
                 continue;
@@ -97,7 +88,7 @@ public class Circle extends Shape {
         return new Response(shapes, traversedCharactersCount);
     }
 
-    private static void onCircleStartLabel(Stack<Shape> incompleteTraversals, List<Shape> tempInnerShapes, List<Shape> shapes, char[] chars, int i, String label) throws Exception {
+    private static void onCircleStartLabel(Stack<Shape> incompleteTraversals, List<Shape> tempInnerShapes, List<Shape> shapes, char[] chars, int i, String label) throws RuntimeException {
         if (label.isEmpty()) {
             if (i - 1 > -1 && chars[i - 1] == '(') {
                 String message = "next square cannot be created while the previous has no label";

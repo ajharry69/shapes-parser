@@ -12,7 +12,7 @@ import static org.junit.Assert.*;
 
 public class ShapeTest {
     @Test
-    public void shapeCreatedWithoutInnerShapes_returnsEmptyInnerShapes() throws Exception {
+    public void shapeCreatedWithoutInnerShapes_returnsEmptyInnerShapes() throws RuntimeException {
         Shape shape = new Shape("LABEL", '[', ']');
         assertEquals(0, shape.getInnerShapes().size());
     }
@@ -42,13 +42,13 @@ public class ShapeTest {
     }
 
     @Test
-    public void shapeToString() throws Exception {
+    public void shapeToString() throws RuntimeException {
         assertEquals("( LABEL )", new Shape("LABEL", '(', ')').toString());
         assertEquals("[ 123 ]", new Shape("123", '[', ']').toString());
     }
 
     @Test
-    public void shapeEquality() throws Exception {
+    public void shapeEquality() throws RuntimeException {
         int uid = 1;
         Shape shape = new Shape("12", '[', ']', Collections.emptyList(), uid);
         assertEquals(shape, new Shape("12", '[', ']', Collections.emptyList(), uid));
@@ -58,7 +58,7 @@ public class ShapeTest {
     }
 
     @Test
-    public void addInnerShapes_returnsListOfShapes_thatIsAnUpdatedVersionCurrentShapesInnerShapesList() throws Exception {
+    public void addInnerShapes_returnsListOfShapes_thatIsAnUpdatedVersionCurrentShapesInnerShapesList() throws RuntimeException {
         Shape shape = new Shape("12", '[', ']');
         List<Shape> innerShapes = shape.addInnerShapes(new Square("123"), new Circle("ABC"));
         assertEquals(2, shape.getInnerShapes().size());

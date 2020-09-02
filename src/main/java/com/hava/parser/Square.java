@@ -9,15 +9,15 @@ import java.util.*;
 import java.util.regex.Pattern;
 
 public class Square extends Shape {
-    public Square(String label) throws Exception {
+    public Square(String label) throws RuntimeException {
         this(label, Collections.emptyList());
     }
 
-    public Square(String label, List<Shape> innerShapes) throws Exception {
+    public Square(String label, List<Shape> innerShapes) throws RuntimeException {
         this(label, innerShapes, Math.abs(UUID.randomUUID().hashCode()));
     }
 
-    public Square(String label, List<Shape> innerShapes, int uid) throws Exception {
+    public Square(String label, List<Shape> innerShapes, int uid) throws RuntimeException {
         super(label, '[', ']', innerShapes, uid);
         if (!(Pattern.matches("^[0-9]+$", label)))
             throw new InvalidShapeLabelException("Square can only be labeled with a number");
@@ -33,7 +33,7 @@ public class Square extends Shape {
      * 1. [\[0-9\]+], [\[0-9\]+[\[0-9\]+]] or [\[0-9\]+[\[0-9\]+]][\[0-9\]+] with optional
      * other appended characters after every closing bracket...
      */
-    public static Response createFromInput(String input) throws Exception {
+    public static Response fromInput(String input) throws RuntimeException {
         Stack<Shape> incompleteTraversals = new Stack<>();
         List<Shape> tempInnerShapes = new ArrayList<>();
         List<Shape> shapes = new ArrayList<>();
@@ -81,19 +81,10 @@ public class Square extends Shape {
                 // would return true for the seventh element in [12[34]] and false for the same element in [12[34][56]]
                 boolean popIncompleteOrBreakLoop = i + 1 < chars.length && chars[i + 1] != '[';
                 if (!incompleteTraversals.empty()) {
-                    Shape insq = popIncompleteOrBreakLoop ? incompleteTraversals.pop() : incompleteTraversals.peek();
-                    if (!label.isEmpty()) insq.addInnerShapes(new Square(label));
+                    Shape sq = popIncompleteOrBreakLoop ? incompleteTraversals.pop() : incompleteTraversals.peek();
+                    if (!label.isEmpty()) sq.addInnerShapes(new Square(label));
 
-                    if (incompleteTraversals.empty()) {
-                        insq.addInnerShapes(tempInnerShapes.toArray(new Shape[0]));
-                        tempInnerShapes.clear();
-                    } else {
-                        if (popIncompleteOrBreakLoop) {
-                            insq.addInnerShapes(tempInnerShapes.toArray(new Shape[0]));
-                            tempInnerShapes.clear();
-                            tempInnerShapes.add(insq);
-                        }
-                    }
+                    sq.addInnerShapes(tempInnerShapes, incompleteTraversals.empty(), popIncompleteOrBreakLoop);
                 } else {
                     shapes.add(new Square(label)); // executed when input is [12]
                 }

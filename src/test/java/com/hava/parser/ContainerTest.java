@@ -27,7 +27,7 @@ public class ContainerTest {
     }
 
     @Test
-    public void parseWithValidSquareStringInput() throws Exception {
+    public void parseWithValidSquareStringInput() throws RuntimeException {
         Container container = new Container();
 
         assertThrows(InvalidInnerShapeException.class, () -> container.parse("[[12]]"));
@@ -51,7 +51,7 @@ public class ContainerTest {
     }
 
     @Test
-    public void parseWithValidCircleStringInput() throws Exception {
+    public void parseWithValidCircleStringInput() throws RuntimeException {
         Container container = new Container();
 
         assertThrows(InvalidInnerShapeException.class, () -> container.parse("((12))"));
@@ -76,7 +76,7 @@ public class ContainerTest {
     }
 
     @Test
-    public void parseWithValidCombinedCircleAndSquareStringInput() throws Exception {
+    public void parseWithValidCombinedCircleAndSquareStringInput() throws RuntimeException {
         Container container = new Container();
 
         assertEquals("{( ABC ), [ 123 ]}", container.parse("(ABC)[123]").toString());

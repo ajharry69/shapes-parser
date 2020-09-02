@@ -18,15 +18,15 @@ public class Shape {
     private final char startLabel, endLabel;
     private List<Shape> innerShapes;
 
-    public Shape(String label, char startLabel, char endLabel) throws Exception {
+    public Shape(String label, char startLabel, char endLabel) {
         this(label, startLabel, endLabel, Collections.emptyList());
     }
 
-    public Shape(String label, char startLabel, char endLabel, List<Shape> innerShapes) throws Exception {
+    public Shape(String label, char startLabel, char endLabel, List<Shape> innerShapes) {
         this(label, startLabel, endLabel, innerShapes, Math.abs(UUID.randomUUID().hashCode()));
     }
 
-    public Shape(String label, char startLabel, char endLabel, List<Shape> innerShapes, int uid) throws Exception {
+    public Shape(String label, char startLabel, char endLabel, List<Shape> innerShapes, int uid) {
         this.uid = uid;
         if (label == null || label.isEmpty()) throw new InvalidShapeException("A shape must have a label");
         assertSupportedStartLabel(startLabel);
@@ -65,6 +65,22 @@ public class Shape {
         List<Shape> _shapes = Constants.addAll(getInnerShapes(), shapes);
         setInnerShapes(_shapes);
         return _shapes;
+    }
+
+    /**
+     * Adds [shapes] to this shape as it's inner shapes
+     */
+    protected void addInnerShapes(List<Shape> shapes, boolean isPendingTraversalsEmpty, boolean pop) {
+        if (isPendingTraversalsEmpty) {
+            addInnerShapes(shapes.toArray(new Shape[0]));
+            shapes.clear();
+        } else {
+            if (pop) {
+                addInnerShapes(shapes.toArray(new Shape[0]));
+                shapes.clear();
+                shapes.add(this);
+            }
+        }
     }
 
     @Override
