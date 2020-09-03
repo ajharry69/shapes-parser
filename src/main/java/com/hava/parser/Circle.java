@@ -24,12 +24,13 @@ public class Circle extends Shape {
     }
 
     public static Response fromInput(String input) throws RuntimeException {
-        Stack<Shape> incompleteTraversals = new Stack<>();
+        // shapes with probable inner shapes
+        Stack<Shape> pendingTraversals = new Stack<>();
         List<Shape> tempInnerShapes = new ArrayList<>();
         List<Shape> shapes = new ArrayList<>();
         StringBuilder labelBuilder = new StringBuilder();
         int traversedCharsCount = 0;
-        int permittedShapesSize = 1; // i.e. shapes here refers to above
+        int permittedShapesCount = 1; // i.e. shapes here refers to above
 
         char[] chars = input.toCharArray();
         int i = 0;
@@ -38,42 +39,42 @@ public class Circle extends Shape {
             char c = chars[i];
             String label = labelBuilder.toString();
             if (c == '(') {
-                // square shape initiator(start label)
-                onCircleStartLabel(incompleteTraversals, tempInnerShapes, shapes, chars, i, label);
-                // make sure label builder has no labels when a start Circle symbol is found; every square must
-                // have their own label
+                onCircleStartLabel(pendingTraversals, tempInnerShapes, shapes, chars, i, label);
+                // make sure label builder has no labels when a start Circle symbol is found;
+                // every square must have their own label
                 labelBuilder = new StringBuilder();
             } else if (c == ')') {
-                // square shape terminator(end label)
-                // would return true for the seventh element in (12(34)) and false for the same element in (12(34](56))
-                boolean popIncompleteOrBreakLoop = (i + 1 < chars.length && chars[i + 1] != '(') || i + 1 == chars.length;
-                if (!incompleteTraversals.empty()) {
-                    Shape sq = popIncompleteOrBreakLoop ? incompleteTraversals.pop() : incompleteTraversals.peek();
+                // would return true for the seventh element in (12(34)) and false for the same
+                // element in (12(34](56))
+                boolean popPendingTraversalsOrBreakLoop = (i + 1 < chars.length && chars[i + 1] != '(') || i + 1 == chars.length;
+                if (pendingTraversals.empty()) {
+                    shapes.add(new Circle(label)); // executed when input is (12)
+                } else {
+                    Shape sq = popPendingTraversalsOrBreakLoop ? pendingTraversals.pop() : pendingTraversals.peek();
                     if (!label.isEmpty()) sq.addInnerShapes(new Circle(label));
 
-                    sq.addInnerShapes(tempInnerShapes, incompleteTraversals.empty(), popIncompleteOrBreakLoop);
-                } else {
-                    shapes.add(new Circle(label)); // executed when input is (12)
+                    sq.addInnerShapes(tempInnerShapes, pendingTraversals.empty(), popPendingTraversalsOrBreakLoop);
                 }
-                // reset/delete past labels upon reaching a shape's end label
+                // clear any existing labels from the builder upon reaching a shape's end label
                 labelBuilder = new StringBuilder();
-                // will be executed when a closing partner for initial opening square bracket has been reached. i.e.
-                // char[i] == ')' and it meets the preceding condition. Below are example of when execution will happen:
+                // will be executed when a closing "partner" for an initial opening square bracket
+                // has been reached. i.e. char[i] == ')' and it meets the preceding condition.
+                // Below are example of when execution will happen:
                 //  1. (12), (12(34)) or (12(34(56))) // happens at last char
                 //  2. (12(34(56)))) // happens at second last char
-                if (incompleteTraversals.empty()) {
-                    // if the above condition is not met i.e. this comment is reached, the [shapes] should be allowed
-                    // to have at most 1 + {the number of time this will run} square bracket
-                    permittedShapesSize++;
-                    if (popIncompleteOrBreakLoop) break;
+                if (pendingTraversals.empty()) {
+                    // if the above condition is not met i.e. this comment is reached, shapes
+                    // returned as part of the response should have at most 1 + {the number of
+                    // time this will run} square bracket
+                    ++permittedShapesCount;
+                    if (popPendingTraversalsOrBreakLoop) break;
                 }
             } else if (String.valueOf(c).matches("[A-Z0-9]")) {
                 // correct label for a Circle, append it to labelBuilder
                 labelBuilder.append(c);
             } else if (c == '[') {
-                onCircleStartLabel(incompleteTraversals, tempInnerShapes, shapes, chars, i, label);
-                // make sure label builder has no labels when a start Circle symbol is found; every square must
-                // have their own label
+                onCircleStartLabel(pendingTraversals, tempInnerShapes, shapes, chars, i, label);
+                // clear any existing labels from the builder for every probable new Square shape
                 labelBuilder = new StringBuilder();
                 Response response = Square.fromInput(input.substring(i));
                 tempInnerShapes.addAll(response.getShapes());
@@ -84,7 +85,7 @@ public class Circle extends Shape {
             }
             i++;
         }
-        assert shapes.size() <= permittedShapesSize;
+        assert shapes.size() <= permittedShapesCount;
         return new Response(shapes, traversedCharsCount);
     }
 

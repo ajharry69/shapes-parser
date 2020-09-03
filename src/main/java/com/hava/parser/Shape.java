@@ -70,14 +70,16 @@ public class Shape {
     /**
      * Adds [shapes] to this shape as it's inner shapes
      */
-    protected void addInnerShapes(List<Shape> shapes, boolean isPendingTraversalsEmpty, boolean pop) {
+    protected void addInnerShapes(List<Shape> shapes, boolean isPendingTraversalsEmpty, boolean popPendingTraversals) {
         if (isPendingTraversalsEmpty) {
             addInnerShapes(shapes.toArray(new Shape[0]));
             shapes.clear();
         } else {
-            if (pop) {
+            if (popPendingTraversals) {
+                // this shape is probably also an inner shape to the next shape in the pending traversals
                 addInnerShapes(shapes.toArray(new Shape[0]));
                 shapes.clear();
+                // add this shape as a potential inner shape for the next shape
                 shapes.add(this);
             }
         }
