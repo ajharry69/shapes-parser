@@ -33,7 +33,7 @@ public class Square extends Shape {
      * 1. [\[0-9\]+], [\[0-9\]+[\[0-9\]+]] or [\[0-9\]+[\[0-9\]+]][\[0-9\]+] with optional
      * other appended characters after every closing bracket...
      */
-    public static Response fromInput(String input) throws RuntimeException {
+    public static Response createResponse(String input) throws RuntimeException {
         // shapes with probable inner shapes
         Stack<Shape> pendingTraversals = new Stack<>();
         List<Shape> tempInnerShapes = new ArrayList<>();

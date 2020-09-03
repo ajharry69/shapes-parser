@@ -23,7 +23,7 @@ public class Circle extends Shape {
             throw new InvalidShapeLabelException("Only UPPERCASE letters are supported as label for Circles");
     }
 
-    public static Response fromInput(String input) throws RuntimeException {
+    public static Response createResponse(String input) throws RuntimeException {
         // shapes with probable inner shapes
         Stack<Shape> pendingTraversals = new Stack<>();
         List<Shape> tempInnerShapes = new ArrayList<>();
@@ -76,7 +76,7 @@ public class Circle extends Shape {
                 onCircleStartLabel(pendingTraversals, tempInnerShapes, shapes, chars, i, label);
                 // clear any existing labels from the builder for every probable new Square shape
                 labelBuilder = new StringBuilder();
-                Response response = Square.fromInput(input.substring(i));
+                Response response = Square.createResponse(input.substring(i));
                 tempInnerShapes.addAll(response.getShapes());
                 i += response.getTraversedCharsCount();
                 continue;

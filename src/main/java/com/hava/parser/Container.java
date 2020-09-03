@@ -48,12 +48,12 @@ public class Container implements ShapeParser {
             Response response;
             switch (c) {
                 case '[':
-                    response = Square.fromInput(input.substring(i));
+                    response = Square.createResponse(input.substring(i));
                     shapes.addAll(response.getShapes());
                     i += response.getTraversedCharsCount();
                     break;
                 case '(':
-                    response = Circle.fromInput(input.substring(i));
+                    response = Circle.createResponse(input.substring(i));
                     shapes.addAll(response.getShapes());
                     i += response.getTraversedCharsCount();
                     break;
