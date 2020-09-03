@@ -37,10 +37,10 @@ public class Square extends Shape {
         Stack<Shape> incompleteTraversals = new Stack<>();
         List<Shape> tempInnerShapes = new ArrayList<>();
         List<Shape> shapes = new ArrayList<>();
-        int permittedShapesSize = 1; // i.e. shapes here refers to above
         StringBuilder labelBuilder = new StringBuilder();
-
+        int permittedShapesSize = 1; // i.e. shapes here refers to above
         int traversedCharsCount = 0;
+
         char[] chars = input.toCharArray();
         for (int i = 0; i < chars.length; i++) {
             traversedCharsCount++;
