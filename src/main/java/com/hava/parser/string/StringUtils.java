@@ -34,7 +34,7 @@ public class StringUtils {
         return _str;
     }
 
-    public static String trimStartAndEnd(String str) {
+    public static String trim(String str) {
         if (str == null) return null;
         Stack<Character> chars = new Stack<>();
         for (char c : str.toCharArray()) {

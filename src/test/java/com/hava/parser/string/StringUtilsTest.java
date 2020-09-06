@@ -32,24 +32,24 @@ public class StringUtilsTest {
     }
 
     @Test
-    public void testTrimStartAndEnd() {
-        assertNull(trimStartAndEnd(null));
-        assertEquals("", trimStartAndEnd(""));
-        assertEquals("", trimStartAndEnd(" "));
-        assertEquals("", trimStartAndEnd("       "));
-        assertEquals("abc", trimStartAndEnd("abc"));
-        assertEquals("ab cd", trimStartAndEnd("ab cd"));
-        assertEquals("abc", trimStartAndEnd("  abc  "));
-        assertEquals("ab cd", trimStartAndEnd("  ab cd  "));
+    public void testTrim() {
+        assertNull(trim(null));
+        assertEquals("", trim(""));
+        assertEquals("", trim(" "));
+        assertEquals("", trim("       "));
+        assertEquals("abc", trim("abc"));
+        assertEquals("ab cd", trim("ab cd"));
+        assertEquals("abc", trim("  abc  "));
+        assertEquals("ab cd", trim("  ab cd  "));
     }
 
     @Test
-    public void test_timeComplexity_trimStartAndEnd() {
+    public void test_timeComplexity_trimUtil() {
         String str = "        hello world!   Coding is great!     ";
         long st = System.currentTimeMillis();
-        System.out.println("<<" + trimStartAndEnd(str) + ">>");
+        System.out.println("<<" + trim(str) + ">>");
         long et = System.currentTimeMillis();
-        System.out.format("Time Taken(trimStartAndEnd): %d%n", et - st);
+        System.out.format("Time Taken(trimUtil): %d%n", et - st);
     }
 
     @Test
