@@ -2,7 +2,7 @@ syntax = "proto2";
 
 package demo;
 
-option java_package = "com.hava.parser.protos";
+option java_package = "com.xently.parser.protos";
 option java_outer_classname = "AddressBookProtos";
 
 message Person {
