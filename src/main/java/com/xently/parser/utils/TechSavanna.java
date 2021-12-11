@@ -1,14 +1,25 @@
 package com.xently.parser.utils;
 
+import javax.crypto.BadPaddingException;
+import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.security.InvalidKeyException;
+import java.security.KeyFactory;
+import java.security.NoSuchAlgorithmException;
+import java.security.PublicKey;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.X509EncodedKeySpec;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -153,5 +164,36 @@ public class TechSavanna {
             if (j == B[i]) return j;
         }
         return -1;
+    }
+
+    public static int getTruesCount(String input) {
+        int inputCharCount = input.length();
+        int count = 0;
+        for (int i = 0; i < inputCharCount; i++) {
+            if (input.charAt(i) != '+' && i - 1 >= 0 && i + 1 < inputCharCount && input.charAt(i - 1) == '+' && input.charAt(i + 1) == '+') {
+                ++count;
+            }
+        }
+        return count;
+    }
+
+    public static String getSecurityCredentials(Path path, String unencryptedSecurityCredential) throws IOException, NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException {
+        // https://docs.oracle.com/javase/8/docs/api/index.html?javax/crypto/Cipher.html
+        Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
+
+        X509EncodedKeySpec keySpec = new X509EncodedKeySpec(Files.readAllBytes(path));
+        PublicKey publicKey = KeyFactory.getInstance("RSA").generatePublic(keySpec);
+
+        cipher.init(Cipher.ENCRYPT_MODE, publicKey);
+        byte[] encryptedCredentials = cipher.doFinal(unencryptedSecurityCredential.getBytes(StandardCharsets.UTF_8));
+        return Base64.getEncoder().encodeToString(encryptedCredentials);
+    }
+
+    public static void main(String[] args) {
+        try {
+            System.out.println(getSecurityCredentials(Paths.get("/home/mitch/projects/android/SandboxCertificate.cer"), "Safaricom111"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

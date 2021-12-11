@@ -6,7 +6,6 @@ import org.junit.Test;
 
 import java.util.Arrays;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class TechSavannaTest {
@@ -69,6 +68,20 @@ public class TechSavannaTest {
     @Test
     public void factorialTest() {
         Assert.assertEquals(120, TechSavanna.factorial(5));
+    }
+
+    @Test
+    public void getTruesCount() {
+        Assert.assertEquals(0, TechSavanna.getTruesCount(""));
+        Assert.assertEquals(0, TechSavanna.getTruesCount("+"));
+        Assert.assertEquals(0, TechSavanna.getTruesCount("d"));
+        Assert.assertEquals(0, TechSavanna.getTruesCount("+d"));
+        Assert.assertEquals(0, TechSavanna.getTruesCount("d+"));
+        Assert.assertEquals(1, TechSavanna.getTruesCount("+d+"));
+        Assert.assertEquals(1, TechSavanna.getTruesCount("+d++"));
+        Assert.assertEquals(1, TechSavanna.getTruesCount("+d++d"));
+        Assert.assertEquals(2, TechSavanna.getTruesCount("+d+d+"));
+        Assert.assertEquals(2, TechSavanna.getTruesCount("+d++d+"));
     }
 
     @Test
