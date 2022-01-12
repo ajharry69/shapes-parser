@@ -11,20 +11,16 @@ import java.util.stream.Collectors;
 public class KopoKopo {
 
     public static class Transaction {
-        private String id = null;
+        private String id;
         private Date transactionDate;
         private double transactionAmount;
-
-        public boolean isDefaultInstance() {
-            return id == null;
-        }
 
         @Override
         public boolean equals(Object o) {
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
             Transaction that = (Transaction) o;
-            return ((Transaction) o).getId().equals(that.getId());
+            return getId().equals(that.getId());
         }
 
         @Override
@@ -95,7 +91,7 @@ public class KopoKopo {
                     if (i == 0) continue;
                     long currentTime = transactionDates.get(i).getTime();
                     long previousTime = transactionDates.get(i - 1).getTime();
-                    if (currentTime - (24 * 60 * 60 * 1000) == previousTime || currentTime == previousTime) {
+                    if (previousTime >= currentTime - (24 * 60 * 60 * 1000)) {
                         largestConsecutive += 1;
                     } else {
                         if (maxLargestConsecutive < largestConsecutive) {
@@ -115,11 +111,9 @@ public class KopoKopo {
                         }
                         return compare;
                     })
-                    .map(stringIntegerEntry -> stringIntegerEntry.getKey())
+                    .map(Map.Entry::getKey)
                     .limit(numberOfCustomers)
                     .collect(Collectors.toList());
-
-//            return customerTransactions.stream().map(Transaction::getId).distinct().limit(numberOfCustomers).sorted().collect(Collectors.toList());
         } catch (IOException e) {
             e.printStackTrace();
         }
