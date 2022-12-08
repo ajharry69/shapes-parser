@@ -22,7 +22,6 @@ import java.security.spec.X509EncodedKeySpec;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 public class TechSavanna {
     /*
@@ -70,7 +69,7 @@ public class TechSavanna {
      * The function accepts INTEGER_ARRAY arr as parameter.
      */
     public static int minDiff(List<Integer> arr) {
-        List<Integer> data = arr.stream().sorted().collect(Collectors.toList());
+        List<Integer> data = arr.stream().sorted().toList();
         int sum = 0;
         for (int j = 1, dataSize = data.size(); j < dataSize; j++) {
             int x = data.get(j - 1), y = data.get(j);

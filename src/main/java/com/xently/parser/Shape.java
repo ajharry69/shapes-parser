@@ -88,9 +88,7 @@ public class Shape {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Shape)) return false;
-
-        Shape shape = (Shape) o;
+        if (!(o instanceof Shape shape)) return false;
 
         if (getUid() != shape.getUid()) return false;
         if (getStartLabel() != shape.getStartLabel()) return false;

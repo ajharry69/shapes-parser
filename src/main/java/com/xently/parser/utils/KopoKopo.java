@@ -67,7 +67,7 @@ public class KopoKopo {
                             e.printStackTrace();
                         }
                         return transaction;
-                    }).collect(Collectors.toList());
+                    }).toList();
 
             Map<String, List<Transaction>> map = new HashMap<>();
             for (Transaction transaction : customerTransactions) {
@@ -84,7 +84,7 @@ public class KopoKopo {
             for (Map.Entry<String, List<Transaction>> entry : map.entrySet()) {
                 List<Date> transactionDates = entry.getValue().stream()
                         .sorted((transaction, t1) -> transaction.transactionDate.compareTo(t1.getTransactionDate()))
-                        .map(Transaction::getTransactionDate).distinct().collect(Collectors.toList());
+                        .map(Transaction::getTransactionDate).distinct().toList();
 
                 int largestConsecutive = 1, maxLargestConsecutive = 1;
                 for (int i = 0; i < transactionDates.size(); i++) {

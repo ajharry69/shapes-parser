@@ -47,21 +47,21 @@ public class Container implements ShapeParser {
             char c = chars[i];
             Response response;
             switch (c) {
-                case '[':
+                case '[' -> {
                     response = Square.createResponse(input.substring(i));
                     shapes.addAll(response.getShapes());
                     i += response.getTraversedCharsCount();
-                    break;
-                case '(':
+                }
+                case '(' -> {
                     response = Circle.createResponse(input.substring(i));
                     shapes.addAll(response.getShapes());
                     i += response.getTraversedCharsCount();
-                    break;
-                default:
+                }
+                default -> {
                     // first character can either be space(' '), '[' or '('
                     if (!Arrays.asList(']', ')').contains(c)) throw new MalformedShapeInputException();
                     i++;
-                    break;
+                }
             }
         }
         return shapes;
