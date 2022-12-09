@@ -2,6 +2,7 @@ package com.xently.parser.utils;
 
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -53,9 +54,10 @@ public class KopoKopo {
         }
     }
 
-    public static List<String> getBestCustomerIDs(String transactionsFile, int numberOfCustomers) {
+    public static List<String> getBestCustomerIDs(String fileName, int numberOfCustomers) {
         try {
-            List<Transaction> customerTransactions = Files.lines(Paths.get(transactionsFile)).filter(s -> !s.startsWith("Customer ID"))
+            Path filePath = Paths.get("", "src", "main", "resources", fileName).toAbsolutePath();
+            List<Transaction> customerTransactions = Files.lines(filePath).filter(s -> !s.startsWith("Customer ID"))
                     .map(s -> {
                         String[] row = s.split(",");
                         Transaction transaction = new Transaction();

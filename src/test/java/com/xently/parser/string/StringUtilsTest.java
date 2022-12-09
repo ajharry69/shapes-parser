@@ -42,22 +42,4 @@ public class StringUtilsTest {
         assertEquals("abc", trim("  abc  "));
         assertEquals("ab cd", trim("  ab cd  "));
     }
-
-    @Test
-    public void test_timeComplexity_trimUtil() {
-        String str = "        hello world!   Coding is great!     ";
-        long st = System.currentTimeMillis();
-        System.out.println("<<" + trim(str) + ">>");
-        long et = System.currentTimeMillis();
-        System.out.format("Time Taken(trimUtil): %d%n", et - st);
-    }
-
-    @Test
-    public void test_timeComplexity_trim() {
-        String str = "        hello world!   Coding is great!     ";
-        long st = System.currentTimeMillis();
-        System.out.println("<<" + str.trim() + ">>");
-        long et = System.currentTimeMillis();
-        System.out.format("Time Taken(trim): %d%n", et - st);
-    }
 }
