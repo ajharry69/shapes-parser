@@ -1,9 +1,9 @@
 package com.xently.leetcode
 
 import com.xently.leetcode.MiddleOfTheLinkedList.ListNode
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNull
 import org.junit.Test
-
-import org.junit.Assert.*
 
 class MiddleOfTheLinkedListTest {
 
@@ -18,6 +18,28 @@ class MiddleOfTheLinkedListTest {
     }
 
     @Test
+    fun `invoke for oddly sized list nodes 2`() {
+        assertEquals(
+            2,
+            MiddleOfTheLinkedList(ListNode(1).apply {
+                next = ListNode(2)
+            })!!.`val`,
+        )
+    }
+
+    @Test
+    fun `invoke for oddly sized list nodes 3`() {
+        assertEquals(
+            2,
+            MiddleOfTheLinkedList(ListNode(1).apply {
+                next = ListNode(2).apply {
+                    next = ListNode(3)
+                }
+            })!!.`val`,
+        )
+    }
+
+    @Test
     fun `invoke for oddly sized list nodes`() {
         assertEquals(
             6,
@@ -28,7 +50,7 @@ class MiddleOfTheLinkedListTest {
                             next = ListNode(5).apply {
                                 next = ListNode(6).apply {
                                     next = ListNode(7).apply {
-                                        next= ListNode(8).apply {
+                                        next = ListNode(8).apply {
                                             next = ListNode(9).apply {
                                                 next = ListNode(10).apply {
                                                     next = ListNode(11).apply {

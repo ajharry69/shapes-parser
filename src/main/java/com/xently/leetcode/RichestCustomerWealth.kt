@@ -2,7 +2,7 @@ package com.xently.leetcode
 
 object RichestCustomerWealth {
     operator fun invoke(accounts: Array<IntArray>): Int {
-        var wealthOfRichest = 0
+        /*var wealthOfRichest = 0
         for (account in accounts) {
             var wealth = account[0]
             for (j in 1 until account.size) {
@@ -12,7 +12,7 @@ object RichestCustomerWealth {
                 wealthOfRichest = wealth
             }
         }
-        return wealthOfRichest
-//        return accounts.maxOf(IntArray::sum)
+        return wealthOfRichest*/
+        return accounts.maxOf(IntArray::sum)
     }
 }

@@ -6,12 +6,12 @@ object MiddleOfTheLinkedList {
     }
 
     operator fun invoke(head: ListNode?): ListNode? {
-        var slowPointer=head
-        var fastPointer=head
+        var slowPointer = head
+        var fastPointer = head
 
-        while(slowPointer != null && fastPointer?.next != null){
-            slowPointer= slowPointer.next
-            fastPointer= fastPointer.next?.next
+        while (slowPointer != null && fastPointer?.next != null) {
+            slowPointer = slowPointer.next
+            fastPointer = fastPointer.next?.next
         }
         return slowPointer
 //        if (head == null) return null
