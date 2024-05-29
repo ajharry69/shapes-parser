@@ -1,6 +1,7 @@
 package com.xently.miscalleneous;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -52,6 +53,7 @@ public class Miscalleneous {
     }
 
     Map<Long, Long> count(Map<String, UserStats>... visits) {
+        if (visits == null) return Collections.emptyMap();
         return Arrays.stream(visits)
                 .flatMap(map -> {
                     try {
